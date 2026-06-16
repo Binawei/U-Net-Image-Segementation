@@ -37,7 +37,7 @@ class CombinedLoss(nn.Module):
         self.ce = nn.CrossEntropyLoss(weight=weights)
 
     def forward(self, pred, target):
-        return (0.7 * self.dice(pred, target)) + (0.3 * self.ce(pred, target))
+        return self.dice(pred, target) + self.ce(pred, target)
 
 
 def compute_dice_per_class(pred, target, num_classes=config.NUM_CLASSES):

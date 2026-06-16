@@ -25,7 +25,7 @@ BATCH_SIZE = 4
 EPOCHS = 100
 LR = 1e-4
 WEIGHT_DECAY = 1e-3
-DROPOUT = 0.4
+DROPOUT = 0.5
 EARLY_STOPPING_PATIENCE = 25
 
 SPLIT = (0.7, 0.15, 0.15)
@@ -35,8 +35,8 @@ SPLIT = (0.7, 0.15, 0.15)
 
 # resize to 256
 
-[0.5, 2.0, 10.0, 20.0]
-CLASS_WEIGHTS = [0.5, 0.5, 0.5, 0.5] //INCREASE AND DECREASE THE VALUES HERE ALSO
+
+CLASS_WEIGHTS = [0.5, 2.0, 10.0, 20.0]
 
 # Device
 if torch.cuda.is_available():

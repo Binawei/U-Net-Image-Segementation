@@ -13,13 +13,13 @@ import config
 # ── Transforms ────────────────────────────────────────────────────────────────
 
 train_transforms = transforms.Compose([
-    transforms.Resize((512, 512), interpolation=transforms.InterpolationMode.BILINEAR),
+    transforms.Resize((256, 256), interpolation=transforms.InterpolationMode.BILINEAR),
     transforms.RandomVerticalFlip(),
     transforms.ToTensor(),
 ])
 
 val_transforms = transforms.Compose([
-    transforms.Resize((512, 512), interpolation=transforms.InterpolationMode.BILINEAR),
+    transforms.Resize((256, 256), interpolation=transforms.InterpolationMode.BILINEAR),
     transforms.ToTensor(),
 ])
 
