@@ -1,0 +1,25 @@
+# Data folders
+data/
+masks/
+png_data/
+processed/
+
+# Model weights
+models/
+*.pth
+
+# Outputs
+plots/
+results/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# macOS
+.DS_Store
+
+# Numpy
+*.npz
+*.npy
