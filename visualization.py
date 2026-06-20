@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from matplotlib.patches import Patch
-
+import random
 import config
 
 COLORS = np.array([
@@ -57,8 +57,6 @@ def binary_pred_to_class_mask(pred_logits):
 def plot_predictions(model, test_loader, num_samples=4, save_path=None):
     if save_path is None:
         save_path = f"{config.PLOTS_DIR}/segmentation_results.png"
-
-    import random
     model.eval()
     is_binary = config.MODE == "multibinary"
 

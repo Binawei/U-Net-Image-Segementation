@@ -26,7 +26,7 @@ os.makedirs(MODELS_DIR, exist_ok=True)
 
 # Training hyperparameters
 BATCH_SIZE = 4
-EPOCHS = 100
+EPOCHS = 300
 LR = 1e-4
 WEIGHT_DECAY = 1e-3
 DROPOUT = 0.5
