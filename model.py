@@ -94,5 +94,21 @@ class UNet(nn.Module):
         return self.out_conv(d1)
 
 
+class MultiBinaryUNet(nn.Module):
+    """Shared encoder-decoder backbone with 3 independent sigmoid binary heads."""
+    def __init__(self, in_channels=1, num_binary=3, dropout=config.DROPOUT):
+        super().__init__()
+        # Reuse full UNet but stop before final classification
+        self.backbone = UNet(in_channels=in_channels, num_classes=64, dropout=dropout)
+        self.backbone.out_conv = nn.Identity()
+        self.heads = nn.ModuleList([nn.Conv2d(64, 1, 1) for _ in range(num_binary)])
+
+    def forward(self, x):
+        features = self.backbone(x)                          # (B, 64, H, W)
+        return torch.cat([h(features) for h in self.heads], dim=1)  # (B, 3, H, W)
+
+
 def new_model():
+    if config.MODE == "multibinary":
+        return MultiBinaryUNet().to(config.DEVICE)
     return UNet().to(config.DEVICE)
