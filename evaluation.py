@@ -1,5 +1,6 @@
 import numpy as np
 import torch
+from scipy.ndimage import binary_erosion
 
 import config
 
@@ -21,11 +22,14 @@ def compute_metrics(pred, target):
 
 def compute_metrics_binary(pred, target):
     """Compute Dice and IoU per binary head. pred: (B,3,H,W) logits."""
-    pred_binary = (torch.sigmoid(pred) > 0.5).float()
+    pred_np = (torch.sigmoid(pred) > 0.5).cpu().numpy()  # (B,3,H,W)
+    # Erode cavity channel to fix over-segmentation
+    pred_np[:, 2] = np.stack([binary_erosion(pred_np[b, 2], iterations=2) for b in range(pred_np.shape[0])])
+    pred_binary = torch.from_numpy(pred_np).float().to(pred.device)
     metrics = {}
     for i, name in enumerate(config.BINARY_CLASS_NAMES):
-        p = pred_binary[:, i].view(-1)
-        t = (target == (i + 1)).float().view(-1)
+        p = pred_binary[:, i].reshape(-1)
+        t = (target == (i + 1)).float().reshape(-1)
         intersection = (p * t).sum()
         union = p.sum() + t.sum() - intersection
         dice = (2 * intersection / (p.sum() + t.sum() + 1e-5)).item()

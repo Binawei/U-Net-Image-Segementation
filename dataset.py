@@ -8,7 +8,6 @@ import torch
 from torch.utils.data import DataLoader, Dataset
 from torchvision import transforms
 from torchvision.transforms import functional as TF
-
 import config
 
 
@@ -45,11 +44,11 @@ def joint_augment(img, mask):
         img  = TF.rotate(img,  angle, interpolation=TF.InterpolationMode.BILINEAR)
         mask = TF.rotate(mask, angle, interpolation=TF.InterpolationMode.NEAREST)
 
-    # Elastic deformation at 30% probability
-    if random.random() < 0.3:
+    # Elastic deformation at 50% probability
+    if random.random() < 0.5:
         img_np  = np.array(img).astype(np.float32)
         mask_np = np.array(mask).astype(np.float32)
-        img_np, mask_np = elastic_deform(img_np, mask_np)
+        img_np, mask_np = elastic_deform(img_np, mask_np, alpha=150, sigma=10)
         img  = Image.fromarray(img_np.astype(np.uint8), mode='L')
         mask = Image.fromarray(mask_np.astype(np.uint8))
 
@@ -65,7 +64,6 @@ val_transforms = transforms.Compose([
 
 
 # ── Patient-level split ────────────────────────────────────────────────────────
-
 def get_patient_splits(img_dir, split=config.SPLIT, seed=config.SEED):
     """Split by patient so all slices of a patient stay in the same set."""
     all_files = sorted([f for f in os.listdir(img_dir) if f.endswith(".png")])
@@ -94,7 +92,6 @@ def get_patient_splits(img_dir, split=config.SPLIT, seed=config.SEED):
 
 
 # ── Python Generator ───────────────────────────────────────────────────────────
-
 def data_generator(file_list, img_dir, mask_dir, mask_transform, batch_size, shuffle=True):
     while True:
         if shuffle:
@@ -126,7 +123,6 @@ def data_generator(file_list, img_dir, mask_dir, mask_transform, batch_size, shu
 
 
 # ── PyTorch Dataset (for val/test with DataLoader) ─────────────────────────────
-
 class AdenomyosisDataset(Dataset):
     def __init__(self, file_list, img_dir, mask_dir, transform, mask_transform):
         self.file_list = file_list
@@ -151,7 +147,6 @@ class AdenomyosisDataset(Dataset):
 
 
 # ── Get all loaders ────────────────────────────────────────────────────────────
-
 def get_dataloaders():
     train_files, val_files, test_files = get_patient_splits(config.DATA_DIR)
 

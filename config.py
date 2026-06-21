@@ -11,7 +11,7 @@ CLASS_NAMES = ["Muscle", "Endometrium", "Cavity"]
 
 # "multiclass" or "multibinary"
 MODE = "multibinary"
-BINARY_CLASS_NAMES = ["Muscle", "Endometrium", "Cavity"]  # foreground only
+BINARY_CLASS_NAMES = ["Muscle", "Endometrium", "Cavity"]
 
 # Directories
 DATA_DIR = "/Users/postgres/Desktop/phd/Project/adenomyosis/png_data/images"
@@ -42,7 +42,7 @@ SPLIT = (0.7, 0.15, 0.15)
 
 CLASS_WEIGHTS = [0.5, 2.0, 10.0, 20.0]
 # pos_weight per binary head: [Muscle, Endometrium, Cavity]
-BINARY_CLASS_WEIGHTS = [2.0, 10.0, 20.0]
+BINARY_CLASS_WEIGHTS = [2.0, 10.0, 15.0]
 
 # Device
 if torch.cuda.is_available():

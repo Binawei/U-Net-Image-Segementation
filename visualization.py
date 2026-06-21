@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 from matplotlib.patches import Patch
+from scipy.ndimage import binary_erosion
 import random
 import config
 
@@ -36,7 +37,7 @@ def plot_training_curves(train_losses, val_losses, val_dices, save_path=None):
     axes[0].grid(True, linestyle="--", alpha=0.5)
 
     axes[1].plot(val_dices, color="darkorange", marker="o", markersize=2)
-    axes[1].set(xlabel="Epoch", ylabel="Mean Dice (excl. bg)", title="Validation Dice")
+    axes[1].set(xlabel="Epoch", ylabel="Mean Dice", title="Validation Dice")
     axes[1].grid(True, linestyle="--", alpha=0.5)
 
     plt.tight_layout()
@@ -46,11 +47,13 @@ def plot_training_curves(train_losses, val_losses, val_dices, save_path=None):
 
 def binary_pred_to_class_mask(pred_logits):
     """Convert (3,H,W) binary logits to a single (H,W) class label map.
-    Priority: Cavity > Endometrium > Muscle > Background (innermost wins)."""
+    Applies erosion to Cavity to prevent over-segmentation."""
     binary = (torch.sigmoid(pred_logits) > 0.5).cpu().numpy()  # (3,H,W) bool
+    # Erode cavity (index 2) to shrink over-predicted regions
+    binary[2] = binary_erosion(binary[2], iterations=2)
     mask = np.zeros(binary.shape[1:], dtype=np.int64)
-    for i in range(3):           # 0=Muscle,1=Endometrium,2=Cavity
-        mask[binary[i]] = i + 1  # later writes overwrite (Cavity wins)
+    for i in range(3):
+        mask[binary[i]] = i + 1  # Cavity wins (written last)
     return mask
 
 
