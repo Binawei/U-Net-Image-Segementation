@@ -44,11 +44,17 @@ def joint_augment(img, mask):
         img  = TF.rotate(img,  angle, interpolation=TF.InterpolationMode.BILINEAR)
         mask = TF.rotate(mask, angle, interpolation=TF.InterpolationMode.NEAREST)
 
-    # Elastic deformation at 50% probability
+    # Brightness/contrast jitter on image only (not mask)
     if random.random() < 0.5:
+        img = TF.adjust_brightness(img, 1 + random.uniform(-0.3, 0.3))
+    if random.random() < 0.5:
+        img = TF.adjust_contrast(img, 1 + random.uniform(-0.3, 0.3))
+
+    # Elastic deformation at 30% probability
+    if random.random() < 0.3:
         img_np  = np.array(img).astype(np.float32)
         mask_np = np.array(mask).astype(np.float32)
-        img_np, mask_np = elastic_deform(img_np, mask_np, alpha=150, sigma=10)
+        img_np, mask_np = elastic_deform(img_np, mask_np, alpha=80, sigma=10)
         img  = Image.fromarray(img_np.astype(np.uint8), mode='L')
         mask = Image.fromarray(mask_np.astype(np.uint8))
 
