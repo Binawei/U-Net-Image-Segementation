@@ -8,19 +8,19 @@ from scipy.ndimage import binary_erosion
 import random
 import config
 
-COLORS = np.array([
-    [0, 0, 0],        # Background - black
-    [255, 0, 0],      # Muscle - red
-    [0, 255, 0],      # Endometrium - green
-    [0, 0, 255],      # Cavity - blue
-]) / 255.0
+COLORS = [
+    "purple",     # Muscle
+    "orange",   # Endometrium
+    "blue",    # Cavity
+]
 
 
 def mask_to_color(mask):
-    h, w = mask.shape
+    from matplotlib.colors import to_rgb
+    h, w = mask.shape[-2], mask.shape[-1]
     color = np.zeros((h, w, 3))
-    for c in range(config.NUM_CLASSES):
-        color[mask == c] = COLORS[c]
+    for c in range(3):  # always 3 foreground classes
+        color[mask == (c + 1)] = to_rgb(COLORS[c])
     return color
 
 
@@ -89,7 +89,7 @@ def plot_predictions(model, test_loader, num_samples=4, save_path=None):
         fg_gt = gt > 0
         gt_overlay[fg_gt] = 0.4 * gt_overlay[fg_gt] + 0.6 * gt_color[fg_gt]
         axes[i, 1].imshow(gt_overlay)
-        axes[i, 1].set_title("Ground Truth Overlay")
+        axes[i, 1].set_title("Ground Truth")
         axes[i, 1].axis("off")
 
         pred_overlay = np.stack([img, img, img], axis=-1)
@@ -97,10 +97,10 @@ def plot_predictions(model, test_loader, num_samples=4, save_path=None):
         fg_mask = pr > 0
         pred_overlay[fg_mask] = 0.4 * pred_overlay[fg_mask] + 0.6 * pred_color[fg_mask]
         axes[i, 2].imshow(pred_overlay)
-        axes[i, 2].set_title("Prediction Overlay")
+        axes[i, 2].set_title("Predictions")
         axes[i, 2].axis("off")
 
-    legend_elements = [Patch(facecolor=COLORS[i+1], label=name) for i, name in enumerate(config.BINARY_CLASS_NAMES if config.MODE == "multibinary" else config.CLASS_NAMES[1:])]
+    legend_elements = [Patch(facecolor=COLORS[i], label=name) for i, name in enumerate(config.BINARY_CLASS_NAMES if config.MODE == "multibinary" else config.CLASS_NAMES)]
     fig.legend(handles=legend_elements, loc="lower center", ncol=3, fontsize=12)
 
     plt.tight_layout()

@@ -118,6 +118,7 @@ def train_multibinary(train_gen, val_loader, steps_per_epoch):
             loss.backward()
             optimizer.step()
             train_loss += loss.item()
+            config.empty_cache()
         train_loss /= steps_per_epoch
         train_losses.append(train_loss)
 
@@ -130,6 +131,7 @@ def train_multibinary(train_gen, val_loader, steps_per_epoch):
                 outputs = net(images)
                 val_loss += criterion(outputs, masks).item()
                 val_dice += np.array(compute_binary_dice_per_class(outputs, masks))
+                config.empty_cache()
         val_loss /= len(val_loader)
         val_dice /= len(val_loader)
         mean_dice = val_dice.mean()
@@ -177,6 +179,7 @@ def train(train_gen, val_loader, steps_per_epoch):
             loss.backward()
             optimizer.step()
             train_loss += loss.item()
+            config.empty_cache()
         train_loss /= steps_per_epoch
         train_losses.append(train_loss)
 
@@ -190,6 +193,7 @@ def train(train_gen, val_loader, steps_per_epoch):
                 outputs = net(images)
                 val_loss += criterion(outputs, masks).item()
                 val_dice += np.array(compute_dice_per_class(outputs, masks))
+                config.empty_cache()
         val_loss /= len(val_loader)
         val_dice /= len(val_loader)
         mean_dice = val_dice[1:].mean()

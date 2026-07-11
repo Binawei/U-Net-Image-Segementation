@@ -44,7 +44,7 @@ def joint_augment(img, mask):
         img  = TF.rotate(img,  angle, interpolation=TF.InterpolationMode.BILINEAR)
         mask = TF.rotate(mask, angle, interpolation=TF.InterpolationMode.NEAREST)
 
-    # Brightness/contrast jitter on image only (not mask)
+    # Brightness/contrast jitter on image only
     if random.random() < 0.5:
         img = TF.adjust_brightness(img, 1 + random.uniform(-0.3, 0.3))
     if random.random() < 0.5:
