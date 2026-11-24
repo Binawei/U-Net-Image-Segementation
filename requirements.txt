@@ -1,0 +1,21 @@
+# PyTorch and torchvision
+torch>=2.0.0
+torchvision>=0.15.0
+torchaudio>=2.0.0
+
+# Scientific computing
+numpy>=1.24.0
+scipy>=1.10.0
+
+# Image processing
+scikit-image>=0.20.0
+Pillow>=9.5.0
+
+# Medical imaging
+nibabel>=5.0.0
+
+# Visualization
+matplotlib>=3.7.0
+
+# Progress bars
+tqdm>=4.65.0

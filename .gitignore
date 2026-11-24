@@ -3,6 +3,7 @@ data/
 masks/
 png_data/
 processed/
+ssl_tvus_milan_images/
 
 # Model weights
 models/
@@ -11,15 +12,63 @@ models/
 # Outputs
 plots/
 results/
+inference_results/
+nifti_predictions/
 
 # Python
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
+.Python
+venv/
+env/
+.venv
+*.egg-info/
+dist/
+build/
 
 # macOS
 .DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
 
 # Numpy
 *.npz
 *.npy
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Project-specific documentation (not for public repo)
+NIFTI_CONVERSION_README.md
+CONVERSION_SUMMARY.md
+WORKFLOW_SUMMARY.md
+DEVICE_SETUP.md
+
+# Scripts for specific datasets
+infer_milan.py
+extract_segmentation_from_pngs.py
+convert_to_nifti.py
+validate_nifti_alignment.py
+zip_predictions.ps1
+
+# Test files
+test_device.py
+image_testing.py

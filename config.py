@@ -6,7 +6,7 @@ import torch
 
 SEED = 42
 IMG_SIZE = 256
-NUM_CLASSES = 4
+NUM_CLASSES = 3
 CLASS_NAMES = ["Muscle", "Endometrium", "Cavity"]
 
 # "multiclass" or "multibinary"
@@ -14,8 +14,9 @@ MODE = "multibinary"
 BINARY_CLASS_NAMES = ["Muscle", "Endometrium", "Cavity"]
 
 # Directories
-DATA_DIR = "/Users/postgres/Desktop/phd/Project/adenomyosis/png_data/images"
-MASK_DIR = "/Users/postgres/Desktop/phd/Project/adenomyosis/png_data/masks"
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, "png_data", "images")
+MASK_DIR = os.path.join(BASE_DIR, "png_data", "masks")
 PLOTS_DIR = "plots"
 RESULTS_DIR = "results"
 MODELS_DIR = "models"
@@ -43,6 +44,8 @@ SPLIT = (0.7, 0.15, 0.15)
 CLASS_WEIGHTS = [0.5, 2.0, 10.0, 20.0]
 # pos_weight per binary head: [Muscle, Endometrium, Cavity]
 BINARY_CLASS_WEIGHTS = [2.0, 10.0, 15.0]
+
+THRESHOLDS = [0.5, 0.4, 0.3]
 
 # Device
 if torch.cuda.is_available():

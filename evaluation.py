@@ -22,7 +22,8 @@ def compute_metrics(pred, target):
 
 def compute_metrics_binary(pred, target):
     """Compute Dice and IoU per binary head. pred: (B,3,H,W) logits."""
-    pred_np = (torch.sigmoid(pred) > 0.5).cpu().numpy()  # (B,3,H,W)
+    probs = torch.sigmoid(pred).cpu().numpy()
+    pred_np = np.stack([(probs[:, i] > config.THRESHOLDS[i]) for i in range(3)], axis=1)# (B,3,H,W)
     # Erode cavity channel to fix over-segmentation
     pred_np[:, 2] = np.stack([binary_erosion(pred_np[b, 2], iterations=2) for b in range(pred_np.shape[0])])
     pred_binary = torch.from_numpy(pred_np).float().to(pred.device)

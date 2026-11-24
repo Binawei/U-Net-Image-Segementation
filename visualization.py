@@ -48,7 +48,9 @@ def plot_training_curves(train_losses, val_losses, val_dices, save_path=None):
 def binary_pred_to_class_mask(pred_logits):
     """Convert (3,H,W) binary logits to a single (H,W) class label map.
     Applies erosion to Cavity to prevent over-segmentation."""
-    binary = (torch.sigmoid(pred_logits) > 0.5).cpu().numpy()  # (3,H,W) bool
+    # binary = (torch.sigmoid(pred_logits) > 0.5).cpu().numpy()  # (3,H,W) bool
+    probs = torch.sigmoid(pred_logits).cpu().numpy()
+    binary = np.stack([probs[i] > config.THRESHOLDS[i] for i in range(3)])
     # Erode cavity (index 2) to shrink over-predicted regions
     binary[2] = binary_erosion(binary[2], iterations=2)
     mask = np.zeros(binary.shape[1:], dtype=np.int64)
