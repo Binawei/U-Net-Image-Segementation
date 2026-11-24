@@ -5,6 +5,11 @@ png_data/
 processed/
 ssl_tvus_milan_images/
 
+# Zip files (data archives)
+*.zip
+*.tar.gz
+*.7z
+
 # Model weights
 models/
 *.pth
@@ -61,6 +66,8 @@ NIFTI_CONVERSION_README.md
 CONVERSION_SUMMARY.md
 WORKFLOW_SUMMARY.md
 DEVICE_SETUP.md
+USER_GUIDE.md
+GITHUB_PUSH_CHECKLIST.md
 
 # Scripts for specific datasets
 infer_milan.py
@@ -68,7 +75,9 @@ extract_segmentation_from_pngs.py
 convert_to_nifti.py
 validate_nifti_alignment.py
 zip_predictions.ps1
+push_to_github.sh
 
 # Test files
 test_device.py
 image_testing.py
+png_data.zip
