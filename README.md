@@ -40,7 +40,6 @@ A PyTorch implementation of U-Net for multi-class medical image segmentation wit
 1. **Clone the repository:**
 
 ```bash
-git clone https://github.com/yourusername/U-Net-Image-Segmentation.git
 cd U-Net-Image-Segmentation
 ```
 
@@ -584,17 +583,3 @@ Enable DataParallel:
 
 `
 
-## Acknowledgments
-
-- U-Net architecture based on [Ronneberger et al. (2015)](https://arxiv.org/abs/1505.04597)
-- Built with PyTorch and NiBabel for medical imaging support
-
----
-
-## Contact
-
-For questions or issues, please open a GitHub issue or contact [your-email@example.com]
-
----
-
-**Happy segmenting! 🎯**
